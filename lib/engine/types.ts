@@ -171,6 +171,7 @@ export type WorldDef = {
   figures: Figure[];
   /** Allowed time signatures */
   timeSignatures: TimeSignature[];
+  reading?: string[];
   /** BPM range for exercises in this world */
   bpmRange: { min: number; max: number };
   /** Difficulty 1–10 */

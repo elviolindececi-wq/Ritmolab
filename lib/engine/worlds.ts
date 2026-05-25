@@ -1,20 +1,14 @@
 /**
  * lib/engine/worlds.ts
  *
- * Definición completa de los 16 mundos.
- * Los mundos 1-8 referencian las lecciones fijas existentes.
- * Los mundos 9-16 son nuevos y se alimentan del generador.
- *
- * Esta es la "tabla de contenidos" del producto completo.
+ * Definición completa de los mundos de RitmoLab.
+ * Este archivo es la tabla de contenidos principal del motor pedagógico.
  */
 
 import type { WorldDef, WorldId } from "./types";
 import { DOMAIN_CRITERIA } from "./types";
 
 export const WORLDS: Record<WorldId, WorldDef> = {
-
-  // ─── Mundos 1-8: anclan en lecciones fijas existentes ─────────────────────
-
   pulse: {
     id: "pulse",
     title: "Mundo 1: Pulso interno",
@@ -25,6 +19,7 @@ export const WORLDS: Record<WorldId, WorldDef> = {
     skills: ["pulse", "silence"],
     figures: ["quarter", "quarter_rest"],
     timeSignatures: ["4/4"],
+    reading: [],
     bpmRange: { min: 60, max: 90 },
     difficulty: 1,
     anchorLessonSlugs: ["pulso-y-negra", "silencios-basicos", "corcheas"],
@@ -35,13 +30,14 @@ export const WORLDS: Record<WorldId, WorldDef> = {
   durations: {
     id: "durations",
     title: "Mundo 2: Duraciones",
-    description: "Blanca y redonda — sentir que un sonido puede durar más de un pulso.",
+    description: "Blanca y redonda: sentir que un sonido puede durar más de un pulso.",
     color: "bg-teal-500",
     emoji: "🎵",
     primarySkill: "reading",
     skills: ["pulse", "reading"],
     figures: ["whole", "half", "quarter", "half_rest", "quarter_rest"],
     timeSignatures: ["4/4"],
+    reading: [],
     bpmRange: { min: 60, max: 85 },
     difficulty: 1,
     prerequisiteWorld: "pulse",
@@ -52,7 +48,7 @@ export const WORLDS: Record<WorldId, WorldDef> = {
 
   eighths: {
     id: "eighths",
-    title: "Mundo 3: Lectura rítmica",
+    title: "Mundo 3: Corcheas y subdivisión inicial",
     description: "Corcheas, patrones mixtos y compás 4/4 en profundidad.",
     color: "bg-sky-500",
     emoji: "🎼",
@@ -60,6 +56,7 @@ export const WORLDS: Record<WorldId, WorldDef> = {
     skills: ["reading", "subdivision", "pulse"],
     figures: ["quarter", "eighth", "quarter_rest", "eighth_rest"],
     timeSignatures: ["4/4"],
+    reading: [],
     bpmRange: { min: 70, max: 100 },
     difficulty: 3,
     prerequisiteWorld: "durations",
@@ -68,9 +65,29 @@ export const WORLDS: Record<WorldId, WorldDef> = {
     domainCriteria: DOMAIN_CRITERIA.strong,
   },
 
+  reading: {
+    id: "reading",
+    title: "Mundo 4: Lectura rítmica",
+    description:
+      "Convertí las figuras escritas en ritmo real: leer, contar y ejecutar sin perder el pulso.",
+    color: "bg-blue-500",
+    emoji: "📖",
+    primarySkill: "reading",
+    skills: ["reading", "pulse"],
+    figures: ["quarter", "quarter_rest", "eighth"],
+    timeSignatures: ["4/4"],
+    reading: [],
+    bpmRange: { min: 60, max: 100 },
+    difficulty: 4,
+    prerequisiteWorld: "eighths",
+    anchorLessonSlugs: ["lectura-con-metronomo", "dictado-simple"],
+    generativeExercisesPerSession: 4,
+    domainCriteria: DOMAIN_CRITERIA.strong,
+  },
+
   dictation: {
     id: "dictation",
-    title: "Mundo 4: Oído rítmico",
+    title: "Mundo 5: Oído rítmico",
     description: "Escuchá ritmos y elegí la partitura correcta.",
     color: "bg-yellow-400",
     emoji: "👂",
@@ -78,9 +95,10 @@ export const WORLDS: Record<WorldId, WorldDef> = {
     skills: ["dictation", "reading"],
     figures: ["quarter", "eighth", "quarter_rest"],
     timeSignatures: ["4/4"],
+    reading: [],
     bpmRange: { min: 72, max: 90 },
     difficulty: 3,
-    prerequisiteWorld: "eighths",
+    prerequisiteWorld: "reading",
     anchorLessonSlugs: ["dictado-simple"],
     generativeExercisesPerSession: 6,
     domainCriteria: DOMAIN_CRITERIA.strong,
@@ -88,7 +106,7 @@ export const WORLDS: Record<WorldId, WorldDef> = {
 
   subdivision: {
     id: "subdivision",
-    title: "Mundo 5: Subdivisión",
+    title: "Mundo 6: Subdivisión",
     description: "Tresillos, semicorcheas y coordinación vocal-corporal.",
     color: "bg-purple-500",
     emoji: "✂️",
@@ -96,6 +114,7 @@ export const WORLDS: Record<WorldId, WorldDef> = {
     skills: ["subdivision", "reading", "dictation"],
     figures: ["quarter", "eighth", "triplet", "sixteenth"],
     timeSignatures: ["4/4"],
+    reading: [],
     bpmRange: { min: 60, max: 88 },
     difficulty: 5,
     prerequisiteWorld: "dictation",
@@ -106,7 +125,7 @@ export const WORLDS: Record<WorldId, WorldDef> = {
 
   musicalidad: {
     id: "musicalidad",
-    title: "Mundo 6: Groove y compás",
+    title: "Mundo 7: Groove y compás",
     description: "Síncopa, compás compuesto y patrones aplicados.",
     color: "bg-red-500",
     emoji: "⚡",
@@ -114,6 +133,7 @@ export const WORLDS: Record<WorldId, WorldDef> = {
     skills: ["syncopation", "meter", "groove"],
     figures: ["quarter", "eighth", "syncope", "dotted_quarter"],
     timeSignatures: ["4/4", "6/8"],
+    reading: [],
     bpmRange: { min: 70, max: 100 },
     difficulty: 6,
     prerequisiteWorld: "subdivision",
@@ -124,26 +144,30 @@ export const WORLDS: Record<WorldId, WorldDef> = {
 
   memory: {
     id: "memory",
-    title: "Mundo 7: Memoria rítmica",
-    description: "Escuchás, retenés y reproducís — el músico real.",
+    title: "Mundo 8: Memoria rítmica",
+    description: "Escuchás, retenés y reproducís: el músico real.",
     color: "bg-purple-600",
     emoji: "🧠",
     primarySkill: "memory",
     skills: ["memory", "dictation", "pulse"],
     figures: ["quarter", "eighth", "quarter_rest"],
     timeSignatures: ["4/4"],
+    reading: [],
     bpmRange: { min: 68, max: 88 },
     difficulty: 5,
     prerequisiteWorld: "dictation",
-    anchorLessonSlugs: ["memoria-ritmica-intro", "call-response-basico", "call-response-corcheas"],
+    anchorLessonSlugs: [
+      "memoria-ritmica-intro",
+      "call-response-basico",
+      "call-response-corcheas",
+    ],
     generativeExercisesPerSession: 4,
     domainCriteria: DOMAIN_CRITERIA.strong,
   },
 
-  // ─── Mundo 8 (Desafíos) ────────────────────────────────────────────────────
   advanced: {
     id: "advanced",
-    title: "Mundo 8: Desafíos integrales",
+    title: "Mundo 9: Desafíos integrales",
     description: "Lectura, oído y metrónomo bajo presión real.",
     color: "bg-zinc-900",
     emoji: "🏆",
@@ -151,6 +175,7 @@ export const WORLDS: Record<WorldId, WorldDef> = {
     skills: ["pulse", "reading", "dictation", "subdivision", "memory"],
     figures: ["quarter", "eighth", "triplet", "syncope", "dotted_quarter"],
     timeSignatures: ["4/4", "3/4"],
+    reading: [],
     bpmRange: { min: 80, max: 110 },
     difficulty: 8,
     prerequisiteWorld: "musicalidad",
@@ -159,18 +184,18 @@ export const WORLDS: Record<WorldId, WorldDef> = {
     domainCriteria: DOMAIN_CRITERIA.mastered,
   },
 
-  // ─── Mundos 9-16: nuevos, puramente generativos ────────────────────────────
-
   speed: {
     id: "speed",
-    title: "Mundo 9: Velocidad progresiva",
-    description: "El mismo patrón, el BPM sube. Hasta dónde llegás manteniendo precisión.",
+    title: "Mundo 10: Velocidad progresiva",
+    description:
+      "El mismo patrón, el BPM sube. Hasta dónde llegás manteniendo precisión.",
     color: "bg-orange-500",
     emoji: "🚀",
     primarySkill: "speed",
     skills: ["speed", "pulse", "reading"],
     figures: ["quarter", "eighth", "dotted_quarter"],
     timeSignatures: ["4/4"],
+    reading: [],
     bpmRange: { min: 80, max: 160 },
     difficulty: 6,
     prerequisiteWorld: "advanced",
@@ -181,7 +206,7 @@ export const WORLDS: Record<WorldId, WorldDef> = {
 
   latin: {
     id: "latin",
-    title: "Mundo 10: Ritmos latinoamericanos",
+    title: "Mundo 11: Ritmos latinoamericanos",
     description: "Bossa nova, tango, clave afrocubana. Groove con identidad.",
     color: "bg-yellow-500",
     emoji: "🌶️",
@@ -189,6 +214,7 @@ export const WORLDS: Record<WorldId, WorldDef> = {
     skills: ["groove", "syncopation", "meter"],
     figures: ["quarter", "eighth", "dotted_quarter", "syncope"],
     timeSignatures: ["4/4", "2/4"],
+    reading: [],
     bpmRange: { min: 80, max: 130 },
     difficulty: 7,
     prerequisiteWorld: "musicalidad",
@@ -199,7 +225,7 @@ export const WORLDS: Record<WorldId, WorldDef> = {
 
   jazz: {
     id: "jazz",
-    title: "Mundo 11: Jazz y swing",
+    title: "Mundo 12: Jazz y swing",
     description: "Corcheas de swing, tresillos en contexto y el feel del jazz.",
     color: "bg-blue-800",
     emoji: "🎷",
@@ -207,6 +233,7 @@ export const WORLDS: Record<WorldId, WorldDef> = {
     skills: ["groove", "subdivision", "syncopation"],
     figures: ["quarter", "eighth", "triplet", "eighth_triplet", "syncope"],
     timeSignatures: ["4/4"],
+    reading: [],
     bpmRange: { min: 90, max: 160 },
     difficulty: 7,
     prerequisiteWorld: "subdivision",
@@ -217,14 +244,22 @@ export const WORLDS: Record<WorldId, WorldDef> = {
 
   sight: {
     id: "sight",
-    title: "Mundo 12: Lectura a primera vista",
+    title: "Mundo 13: Lectura a primera vista",
     description: "Patrones nuevos cada vez. Nunca el mismo ejercicio dos veces.",
     color: "bg-green-700",
     emoji: "👁️",
     primarySkill: "sight_reading",
     skills: ["sight_reading", "reading", "pulse"],
-    figures: ["quarter", "eighth", "dotted_quarter", "triplet", "quarter_rest", "eighth_rest"],
+    figures: [
+      "quarter",
+      "eighth",
+      "dotted_quarter",
+      "triplet",
+      "quarter_rest",
+      "eighth_rest",
+    ],
     timeSignatures: ["4/4", "3/4", "2/4"],
+    reading: [],
     bpmRange: { min: 70, max: 110 },
     difficulty: 7,
     prerequisiteWorld: "advanced",
@@ -235,7 +270,7 @@ export const WORLDS: Record<WorldId, WorldDef> = {
 
   meters: {
     id: "meters",
-    title: "Mundo 13: Compases irregulares",
+    title: "Mundo 14: Compases irregulares",
     description: "5/4, 7/8 y otros compases que rompen la simetría binaria.",
     color: "bg-indigo-600",
     emoji: "📐",
@@ -243,6 +278,7 @@ export const WORLDS: Record<WorldId, WorldDef> = {
     skills: ["meter", "pulse", "reading"],
     figures: ["quarter", "eighth", "dotted_quarter"],
     timeSignatures: ["5/4", "7/8", "3/4"],
+    reading: [],
     bpmRange: { min: 70, max: 110 },
     difficulty: 9,
     prerequisiteWorld: "musicalidad",
@@ -253,7 +289,7 @@ export const WORLDS: Record<WorldId, WorldDef> = {
 
   funk: {
     id: "funk",
-    title: "Mundo 14: Funk y groove",
+    title: "Mundo 15: Funk y groove",
     description: "El 16º como unidad, síncopa cruzada y el piso inamovible.",
     color: "bg-pink-600",
     emoji: "🎸",
@@ -261,6 +297,7 @@ export const WORLDS: Record<WorldId, WorldDef> = {
     skills: ["groove", "subdivision", "syncopation", "independence"],
     figures: ["sixteenth", "eighth", "syncope", "dotted_quarter"],
     timeSignatures: ["4/4"],
+    reading: [],
     bpmRange: { min: 80, max: 130 },
     difficulty: 8,
     prerequisiteWorld: "subdivision",
@@ -272,13 +309,33 @@ export const WORLDS: Record<WorldId, WorldDef> = {
   master: {
     id: "master",
     title: "Mundo 16: Modo maestro",
-    description: "Retos de precisión máxima. Para los que dominaron todo lo anterior.",
+    description:
+      "Retos de precisión máxima. Para los que dominaron todo lo anterior.",
     color: "bg-zinc-950",
     emoji: "🌟",
     primarySkill: "sight_reading",
-    skills: ["pulse", "reading", "dictation", "subdivision", "memory", "speed", "groove"],
-    figures: ["whole","half","quarter","eighth","sixteenth","triplet","dotted_quarter","syncope","eighth_triplet"],
+    skills: [
+      "pulse",
+      "reading",
+      "dictation",
+      "subdivision",
+      "memory",
+      "speed",
+      "groove",
+    ],
+    figures: [
+      "whole",
+      "half",
+      "quarter",
+      "eighth",
+      "sixteenth",
+      "triplet",
+      "dotted_quarter",
+      "syncope",
+      "eighth_triplet",
+    ],
     timeSignatures: ["4/4", "3/4", "6/8", "5/4"],
+    reading: [],
     bpmRange: { min: 100, max: 180 },
     difficulty: 10,
     prerequisiteWorld: "advanced",
@@ -289,9 +346,22 @@ export const WORLDS: Record<WorldId, WorldDef> = {
 };
 
 export const WORLD_ORDER: WorldId[] = [
-  "pulse", "durations", "eighths", "dictation", "subdivision",
-  "musicalidad", "memory", "advanced",
-  "speed", "latin", "jazz", "sight", "meters", "funk", "master",
+  "pulse",
+  "durations",
+  "eighths",
+  "reading",
+  "dictation",
+  "subdivision",
+  "musicalidad",
+  "memory",
+  "advanced",
+  "speed",
+  "latin",
+  "jazz",
+  "sight",
+  "meters",
+  "funk",
+  "master",
 ];
 
 export function getWorld(id: WorldId): WorldDef {
@@ -300,6 +370,10 @@ export function getWorld(id: WorldId): WorldDef {
 
 export function getNextWorld(currentId: WorldId): WorldDef | null {
   const idx = WORLD_ORDER.indexOf(currentId);
-  if (idx < 0 || idx >= WORLD_ORDER.length - 1) return null;
+
+  if (idx < 0 || idx >= WORLD_ORDER.length - 1) {
+    return null;
+  }
+
   return WORLDS[WORLD_ORDER[idx + 1]];
 }
