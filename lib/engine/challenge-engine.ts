@@ -38,11 +38,13 @@ export function generateDailyChallenges(skillStates: SkillState[]): ChallengeDef
     .slice(0, 3);
 
   // Priority: weak → unpracticed → any
-  const targets: SkillId[] = [
-    ...weak.map(s => s.id),
-    ...unpracticed.map(s => s.id),
-    "pulse", "reading", "dictation",  // fallback
-  ].slice(0, 3);
+  const fallbackTargets: SkillId[] = ["pulse", "reading", "dictation"];
+
+const targets: SkillId[] = [
+  ...weak.map((s) => s.id as SkillId),
+  ...unpracticed.map((s) => s.id as SkillId),
+  ...fallbackTargets,
+].slice(0, 3);
 
   return [
     buildChallenge(DAILY_TEMPLATES[3], targets[0] ?? "pulse"),  // perfect_run on weakest
